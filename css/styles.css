@@ -1,0 +1,17 @@
+.formulario{
+width: 50%;
+}
+.contenedorBotones{
+    margin-top: 10px;
+    display: flex;
+}
+.btn{
+    font-size: small !important;
+     margin: 2px !important; 
+}
+
+#contenedorFiltrado{
+    width: 50%;
+    margin-top: 20px;
+}
+
