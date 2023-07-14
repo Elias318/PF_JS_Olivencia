@@ -35,16 +35,24 @@ let btnSinEnvio = document.getElementById("btnSinEnvio")
 let contenidoBtnEnvio = document.getElementById("contenidoBtnEnvio")
 
 
+//POR DEFECTO
+let modoMostrar = localStorage.getItem("mostrarProductos")
 
+if(modoMostrar == "true"){
+    mostrarProductos(listaProductos)
+}
   
-let carrito = []
+let carrito =[]
 
 if(localStorage.getItem("carrito")){
-    JSON.parse(localStorage.getItem("Carrito"))
+    console.log("ENTRA")
+    carrito = JSON.parse(localStorage.getItem("carrito"))
 }else{
-    carrito=[]
+    
     localStorage.setItem("carrito" , carrito)
 }
+
+
 
 
 //CONTADOR DE CARACTERES
@@ -61,16 +69,11 @@ function contadorDeCaracteres() {
 
 
 
-//POR DEFECTO
-let modoMostrar = localStorage.getItem("mostrarProductos")
-
-if(modoMostrar == "true"){
-    mostrarProductos(listaProductos)
-}
 
 
 
-    cargarProductosCarrito(carrito)
+
+    
 
 
 
@@ -303,12 +306,6 @@ botonCarrito.addEventListener("click", () => {
     
     cargarProductosCarrito(carrito)
 
-//    if(carrito.length != 0){
-//     localStorage.setItem("mostrarCarrito" , true)
-    
-    
-//    }else{
-//     localStorage.setItem("mostrarCarrito" , false)
 //    }
    
     precioTotal.innerHTML = ``
