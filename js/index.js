@@ -38,6 +38,7 @@ let contenidoBtnEnvio = document.getElementById("contenidoBtnEnvio")
 
   
 let carrito = []
+
 if(localStorage.getItem("carrito")){
     JSON.parse(localStorage.getItem("Carrito"))
 }else{
@@ -57,12 +58,24 @@ function contadorDeCaracteres() {
     countSpan.textContent = remaining;
 }
 
+
+
+
 //POR DEFECTO
 let modoMostrar = localStorage.getItem("mostrarProductos")
 
 if(modoMostrar == "true"){
     mostrarProductos(listaProductos)
 }
+
+
+
+    cargarProductosCarrito(carrito)
+
+
+
+
+
 
 
 //FUNCIONES PARA AGREGAR PRODUCTO
@@ -122,7 +135,7 @@ selecFiltrado.addEventListener("change" , () =>{
 })
 
 function ordenarMenorMayor(array){
-    console.log("Entro")
+    
     const menorMayor = [].concat(array)
     menorMayor.sort((a,b) => a.precio - b.precio)
     mostrarProductos(menorMayor)
@@ -245,16 +258,24 @@ function calcularTotal(array , costoDelEnvio){
 }
 
 function borrarProducto(array,idABorrar){
-    let indice  = array.findIndex(producto => producto.id === idABorrar )
-    if( indice != -1){
+    let indice  = array.findIndex(producto => producto.id == idABorrar )
+    
+    let busquedaProducto = carrito.find((elemento) =>elemento.id == idABorrar )
+    
+    if(busquedaProducto.cantidad >=1){
+        busquedaProducto.cantidad--
+       busquedaProducto.cantidad==0 && array.splice(indice , 1 ); 
+    }else if( indice != -1){
         array.splice(indice , 1 );
     }
+    localStorage.setItem("carrito" , JSON.stringify(carrito))
+    
+    
     cargarProductosCarrito(array)
 }
 
 
 function cargarProductosCarrito(array){
-    
     modalBodyCarrito.innerHTML = ``
     precioTotal.innerHTML = ``
     array.forEach((productoDelCarrito)=>{
@@ -265,29 +286,32 @@ function cargarProductosCarrito(array){
                   <div class="card-body">
                          <h4 class="card-title">${productoDelCarrito.nombre}</h4>
                           <p class="card-text">$${productoDelCarrito.precio}</p> 
-                          <button class= "btn btn-danger" id="botonEliminar${productoDelCarrito.id}"><i class="fas fa-trash-alt "></i></button>
+                          <p>cantidad:${productoDelCarrito.cantidad}</p>
+                          <button class= "btn btn-danger btn-delete" id="botonEliminar${productoDelCarrito.id}" data-id="${productoDelCarrito.id}"><i class="fas fa-trash-alt "></i></button>
                   </div>    
-             </div>`
-
-
-//NO SE COMO HACER PARA QUE ME TOME CADA ITEM PARA ELIMINARLO . SIEMPRE ME TOMA EL ULTIMO PORQUE SE SOBREESCRIBE EL "btnBorrar" PERO NO SE COMO CAMBIARLO 
+             </div>`})        
+            let botonEliminar= document.querySelectorAll(".btn-delete")
+            botonEliminar.forEach((boton) =>{
+                boton.addEventListener("click" , ()=>{const id= boton.dataset.id
+                borrarProducto(array,id)})
+        })  
         
-        let btnBorrar= document.getElementById(`botonEliminar${productoDelCarrito.id}`)
-        btnBorrar.addEventListener("click" , ()=>{
-            let idABorrar = productoDelCarrito.id
-            borrarProducto(carrito , idABorrar)
-            })
-        
-                 
-    })
-    
-     
 }
 
 
 botonCarrito.addEventListener("click", () => {
+    
     cargarProductosCarrito(carrito)
-    precioTotal,innerHTML = ``
+
+//    if(carrito.length != 0){
+//     localStorage.setItem("mostrarCarrito" , true)
+    
+    
+//    }else{
+//     localStorage.setItem("mostrarCarrito" , false)
+//    }
+   
+    precioTotal.innerHTML = ``
     contenidoBtnEnvio.innerHTML=``
 })
 
@@ -304,13 +328,16 @@ btnSinEnvio.addEventListener("click" , ()=>{
 
 function agregarACarrito(producto){
     let busquedaProducto = carrito.find((elemento) =>elemento.id == producto.id )
+   
     if(busquedaProducto == undefined){
-        carrito.push(producto)
-        localStorage.setItem("carrito" , JSON.stringify(carrito))
         
+        producto.cantidad++
+        
+        carrito.push(producto) 
     }else{
-        alert(`El producto ${producto.nombre} ya existe`)
+        producto.cantidad++
     }
+    localStorage.setItem("carrito" , JSON.stringify(carrito))
     
 }
 
