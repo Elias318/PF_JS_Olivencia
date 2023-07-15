@@ -70,21 +70,6 @@ function contadorDeCaracteres() {
     countSpan.textContent = remaining;
 }
 
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
 //FUNCIONES PARA AGREGAR PRODUCTO
 let aviso
 let avisoPrecio
@@ -169,7 +154,7 @@ function ordenarMayorMenor(array){
 }
 
 function ordenarAlfabeticamenteTitulo(array){
-    // localStorage.setItem("mostrarProductos" , true)
+  
     const arrayAlfabetico = [].concat(array)
     arrayAlfabetico.sort( (a,b) =>{
        if (a.nombre > b.nombre) {
@@ -264,7 +249,7 @@ function costoEnvio(array){
 }
 
 function calcularTotal(array , costoDelEnvio){
-    let total = array.reduce((acumulador , producto) => acumulador + producto.precio , 0)
+    let total = array.reduce((acumulador , producto) => acumulador + (producto.precio*producto.cantidad) , 0)
     
     if (localStorage.getItem("BotonEnvio") == "true"){
         precioTotal.innerHTML = `<p>Envio : $${costoDelEnvio}.</p>
