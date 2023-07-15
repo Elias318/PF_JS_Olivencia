@@ -9,7 +9,6 @@ let precioProducto =document.getElementsByClassName("precioProducto");
 
 let contenedorProductos = document.getElementById("Productos");
 
-let contenedorNombreProducto = document.getElementById("contenedorNombreProducto")
 
 let contenedorPrecioProducto = document.getElementById("contenedorPrecioProducto")
 
@@ -50,7 +49,7 @@ if(modoMostrar == "true"){
 let carrito =[]
 
 if(localStorage.getItem("carrito")){
-    console.log("ENTRA")
+    
     carrito = JSON.parse(localStorage.getItem("carrito"))
 }else{
     
@@ -100,44 +99,28 @@ function agregarProducto(nombre , precio ){
     
     
     let nombreProd = nombre
-    if(evaluarNombreProducto(nombreProd)== true || nombreProd ==""){
-        
-    
+    if(evaluarNombreProducto(nombreProd)== true || nombreProd =="" || precio == ""){
         if(aviso == undefined){
             aviso = document.createElement("div")
     
             aviso.className = "claseAviso"
                 aviso.innerHTML=`<div >
-                Nombre invalido
+                ERROR:Faltan datos por completar o Dato ya ingresado
                 </div>`
-                contenedorNombreProducto.appendChild(aviso)
+                contenedorPrecioProducto.appendChild(aviso)
                 
         }        
     }else{
         let precioProd = precio
-       if(precioProd == ""){
-        if(avisoPrecio == undefined){
-            avisoPrecio = document.createElement("div")
-    
-            aviso.className = "claseAviso"
-                aviso.innerHTML=`<div >
-                Nombre invalido
-                </div>`
-                contenedorNombreProducto.appendChild(aviso)
-                
-        }        
-       }
-        
-    
-        let productoNuevo=new Producto(listaProductos.length + 1 , nombreProd , precioProd);
+        let productoNuevo=new Producto(listaProductos.length + 1 , nombreProd , precioProd , 0);
 
         listaProductos.push(productoNuevo)
 
         localStorage.setItem("listaProductos" , JSON.stringify( listaProductos))
  
         mostrarProductos(listaProductos)
-        aviso.innerHTML = ``
-        aviso = undefined
+        /*aviso.innerHTML = ``
+        aviso = undefined*/
     }
 
 }
