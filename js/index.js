@@ -9,6 +9,10 @@ let precioProducto =document.getElementsByClassName("precioProducto");
 
 let contenedorProductos = document.getElementById("Productos");
 
+let contenedorNombreProducto = document.getElementById("contenedorNombreProducto")
+
+let contenedorPrecioProducto = document.getElementById("contenedorPrecioProducto")
+
 let textAreaNombreProducto = document.getElementById("textAreaNombreProducto")
 
 let textAreaPrecioProducto = document.getElementById("textAreaPrecioProducto")
@@ -36,6 +40,7 @@ let contenidoBtnEnvio = document.getElementById("contenidoBtnEnvio")
 
 
 //POR DEFECTO
+localStorage.setItem("avisoNombreInv", false )
 let modoMostrar = localStorage.getItem("mostrarProductos")
 
 if(modoMostrar == "true"){
@@ -82,29 +87,59 @@ function contadorDeCaracteres() {
 
 
 //FUNCIONES PARA AGREGAR PRODUCTO
+let aviso
+let avisoPrecio
 btnAgregarProducto.onclick= () => {
     agregarProducto(textAreaNombreProducto.value , textAreaPrecioProducto.value ) 
 
 }
-    
+
+
+
 function agregarProducto(nombre , precio ){
-    let nombreProd = nombre
-
-  
-
- if(evaluarNombreProducto(nombreProd)== true){
-    alert("Producto ya ingresado.")
-}else{
-    let precioProd = precio
     
-    let productoNuevo=new Producto(listaProductos.length + 1 , nombreProd , precioProd);
+    
+    let nombreProd = nombre
+    if(evaluarNombreProducto(nombreProd)== true || nombreProd ==""){
+        
+    
+        if(aviso == undefined){
+            aviso = document.createElement("div")
+    
+            aviso.className = "claseAviso"
+                aviso.innerHTML=`<div >
+                Nombre invalido
+                </div>`
+                contenedorNombreProducto.appendChild(aviso)
+                
+        }        
+    }else{
+        let precioProd = precio
+       if(precioProd == ""){
+        if(avisoPrecio == undefined){
+            avisoPrecio = document.createElement("div")
+    
+            aviso.className = "claseAviso"
+                aviso.innerHTML=`<div >
+                Nombre invalido
+                </div>`
+                contenedorNombreProducto.appendChild(aviso)
+                
+        }        
+       }
+        
+    
+        let productoNuevo=new Producto(listaProductos.length + 1 , nombreProd , precioProd);
 
-    listaProductos.push(productoNuevo)
+        listaProductos.push(productoNuevo)
 
-    localStorage.setItem("listaProductos" , JSON.stringify( listaProductos))
+        localStorage.setItem("listaProductos" , JSON.stringify( listaProductos))
  
-    mostrarProductos(listaProductos)
-}
+        mostrarProductos(listaProductos)
+        aviso.innerHTML = ``
+        aviso = undefined
+    }
+
 }
     
 function evaluarNombreProducto(nombre){
