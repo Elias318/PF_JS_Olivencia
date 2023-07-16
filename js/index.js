@@ -334,11 +334,11 @@ botonCarrito.addEventListener("click", () => {
 btnConEnvio.addEventListener("click" , ()=> {
       
 
-    carrito != 0 ? (localStorage.setItem("BotonEnvio" , true) , costoEnvio(carrito)): alert("Debe ingresar algun producto al carrito")
+    carrito != 0 && (localStorage.setItem("BotonEnvio" , true) , costoEnvio(carrito))
     })
 
 btnSinEnvio.addEventListener("click" , ()=>{
-    carrito != 0 ? (localStorage.setItem("BotonEnvio" , false),calcularTotal(carrito , 0)) : alert("Debe ingresar algun producto al carrito")
+    carrito != 0 && (localStorage.setItem("BotonEnvio" , false),calcularTotal(carrito , 0)) 
 })
 
 
