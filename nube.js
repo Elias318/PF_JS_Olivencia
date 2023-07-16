@@ -1,4 +1,3 @@
-
 //PODRIA HACER UN "TIPO DE PRODUCTO"
 //Buscador (Clase 12)
 
@@ -16,6 +15,7 @@ let contenedorPrecioProducto = document.getElementById("contenedorPrecioProducto
 let textAreaNombreProducto = document.getElementById("textAreaNombreProducto")
 
 let textAreaPrecioProducto = document.getElementById("textAreaPrecioProducto")
+let contenedorBotonesCarrito = document.getElementById("contenedorBotoncarrito")
 
 let btnAgregarProducto = document.getElementById("btnAgregarProducto")
 
@@ -32,12 +32,13 @@ let precioTotal = document.getElementById("precioTotal")
 let botonCarrito = document.getElementById("botonCarrito")
 let modalBodyCarrito = document.getElementById("modal-bodyCarrito")
 
+let contenedorDeBotonesCarrito = document.getElementById("contenedorBotoncarrito")
+
 let btnConEnvio = document.getElementById("btnEnvio")
 
 let btnSinEnvio = document.getElementById("btnSinEnvio")
 
 let contenidoBtnEnvio = document.getElementById("contenidoBtnEnvio")
-let contenidoBotonCarrito = document.getElementById("contenedorBotoncarrito")
 
 
 //POR DEFECTO
@@ -74,7 +75,7 @@ function contadorDeCaracteres() {
 
 //FUNCIONES PARA AGREGAR PRODUCTO
 let aviso
-let avisoPrecio
+
 btnAgregarProducto.onclick= () => {
     agregarProducto(textAreaNombreProducto.value , textAreaPrecioProducto.value ) 
 
@@ -106,8 +107,7 @@ function agregarProducto(nombre , precio ){
         localStorage.setItem("listaProductos" , JSON.stringify( listaProductos))
  
         mostrarProductos(listaProductos)
-        /*aviso.innerHTML = ``
-        aviso = undefined*/
+        
     }
 
 }
@@ -282,16 +282,18 @@ function borrarProducto(array,idABorrar){
     cargarProductosCarrito(array)
 }
 
-function mostrarcontenidoBotonCarrito(){
-    contenidoBotonCarrito.style.display="block"
-}
 
-function ocultarcontenidoBotonCarrito(){
-    contenidoBotonCarrito.style.display="none"
-}
+
+
+
+let contenedorBotonesDelCarrito
+
 function cargarProductosCarrito(array){
-    modalBodyCarrito.innerHTML = ``
-    precioTotal.innerHTML = ``
+   
+    // modalBodyCarrito.innerHTML = ``
+    // precioTotal.innerHTML = ``
+
+
     array.forEach((productoDelCarrito)=>{
        modalBodyCarrito.innerHTML += `
     
@@ -308,15 +310,31 @@ function cargarProductosCarrito(array){
             botonEliminar.forEach((boton) =>{
                 boton.addEventListener("click" , ()=>{const id= boton.dataset.id
                 borrarProducto(array,id)})
-
-    })  
-
-    if(array.length!= 0){
-        mostrarcontenidoBotonCarrito();
+            })  
+   
+    if(array.length != 0){
+        localStorage.setItem("botonesEnvios" , true)
+        
+        if(contenedorBotonesDelCarrito==undefined){
+            contenedorBotonesDelCarrito=document.createElement("div")
+            contenedorBotonesDelCarrito.className="row ml-ato"
+            contenedorBotonesDelCarrito.innerHTML=`
+                <div >
+                  <button type="button" id="btnEnvio" class="btn btn-primary"  >Con envio</button>  
+                  <button type="button" id="btnSinEnvio" class="btn btn-secondary" >Sin envio</button>
+               </div>
+               <div id="contenidoBtnEnvio">
+    
+               </div>
+                <div id="precioTotal"></div>`
+                 
+                contenedorDeBotonesCarrito .appendChild(contenedorBotonesDelCarrito)
+        }
+        
     }else{
-        ocultarcontenidoBotonCarrito();
-    }
+        localStorage.setItem("botonesEnvios" , false)
 
+    }
         
 }
 
@@ -324,21 +342,16 @@ function cargarProductosCarrito(array){
 botonCarrito.addEventListener("click", () => {
     
     cargarProductosCarrito(carrito)
-
-//    }
-   
-    precioTotal.innerHTML = ``
-    contenidoBtnEnvio.innerHTML=``
+    // precioTotal.innerHTML = ``
+    // contenidoBtnEnvio.innerHTML=``
 })
 
 btnConEnvio.addEventListener("click" , ()=> {
-      
-
-    carrito != 0 ? (localStorage.setItem("BotonEnvio" , true) , costoEnvio(carrito)): alert("Debe ingresar algun producto al carrito")
-    })
+    carrito != 0 && localStorage.setItem("BotonEnvio" , true)
+})
 
 btnSinEnvio.addEventListener("click" , ()=>{
-    carrito != 0 ? (localStorage.setItem("BotonEnvio" , false),calcularTotal(carrito , 0)) : alert("Debe ingresar algun producto al carrito")
+    carrito != 0 && localStorage.setItem("BotonEnvio" , false),calcularTotal(carrito , 0)
 })
 
 
@@ -356,21 +369,3 @@ function agregarACarrito(producto){
     localStorage.setItem("carrito" , JSON.stringify(carrito))
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
