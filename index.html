@@ -101,8 +101,8 @@
         </div>
         <div class="contenedorBotones">
             <button type="button" id="btnAgregarProducto" class="btn btn-sm btn-primary btn-success fs-7" on>Agregar Producto</button>
-            <button type="button" id="btnMostrarProductos" class="btn btn-sm btn-primary" onclick=mostrarProductos()>Mostrar Productos</button>
-            <button type="button" id="btnOcultarProductos" class="btn btn-sm btn-primary">Ocultar Productos</button>
+            <!-- <button type="button" id="btnMostrarProductos" class="btn btn-sm btn-primary" onclick=mostrarProductos()>Mostrar Productos</button>
+            <button type="button" id="btnOcultarProductos" class="btn btn-sm btn-primary">Ocultar Productos</button> -->
         </div>
        
     </form>
@@ -113,8 +113,18 @@
 
         </div>
     </div>
+
+    <!-- loader -->
     
- 
+    <div id="contenedorLoaderProductos">
+      <h3 id="loaderTexto" class="text-succes text-center">Cargando Productos</h3>}
+      <div id="loader" class="d-flex justify-content-center">
+          <div class="spinner-border text-succes" role="status">
+            <span class="visually-hidden"></span>
+          </div>
+      </div>
+    </div>
+    
 
      <!--Script de Bootstrap-->
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"

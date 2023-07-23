@@ -1,0 +1,43 @@
+
+[
+    {
+        "id": 1 ,
+        "nombre": "Vital Can" , 
+        "precio": 5000,
+        "cantidad":0 ,
+        "imagen":"/images/descarga.png"
+    },
+
+    {
+        "id": 2 ,
+        "nombre": "Cat Chow" , 
+        "precio": 4000,
+        "cantidad": 0,
+        "imagen":"/images/descarga.png"
+    },
+
+    {
+        "id": 3 ,
+        "nombre": "Doggy" , 
+        "precio": 7000,
+        "cantidad": 0,
+        "imagen":"/images/descarga.png"
+    },
+
+    {
+        "id": 4,
+        "nombre": "Eat Chow" , 
+        "precio": 2000,
+        "cantidad": 0,
+        "imagen":"/images/descarga.png"
+    },
+
+    {
+        "id": 5,
+        "nombre": "Raza" , 
+        "precio": 2500,
+        "cantidad": 0,
+        "imagen":"/images/descarga.png"
+    }
+]
+

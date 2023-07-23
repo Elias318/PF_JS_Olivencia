@@ -19,9 +19,11 @@ let textAreaPrecioProducto = document.getElementById("textAreaPrecioProducto")
 
 let btnAgregarProducto = document.getElementById("btnAgregarProducto")
 
-let btnMostrarProductos = document.getElementById("btnMostrarProductos")
+let loaderCargaProductos = document.getElementById("contenedorLoaderProductos")
 
-let btnOcultarProductos = document.getElementById("btnOcultarProductos")
+// let btnMostrarProductos = document.getElementById("btnMostrarProductos")
+
+// let btnOcultarProductos = document.getElementById("btnOcultarProductos")
 
 
 
@@ -42,11 +44,7 @@ let contenidoBotonCarrito = document.getElementById("contenedorBotoncarrito")
 
 //POR DEFECTO
 localStorage.setItem("avisoNombreInv", false )
-let modoMostrar = localStorage.getItem("mostrarProductos")
 
-if(modoMostrar == "true"){
-    mostrarProductos(listaProductos)
-}
   
 let carrito =[]
 
@@ -106,8 +104,7 @@ function agregarProducto(nombre , precio ){
         localStorage.setItem("listaProductos" , JSON.stringify( listaProductos))
  
         mostrarProductos(listaProductos)
-        /*aviso.innerHTML = ``
-        aviso = undefined*/
+       
     }
 
 }
@@ -171,12 +168,7 @@ function ordenarAlfabeticamenteTitulo(array){
     mostrarProductos(arrayAlfabetico)
 }
 
-//IMPRIMIR PRODUCTOS 
-btnMostrarProductos.onclick =  () => {
-    mostrarProductos(listaProductos)
-    localStorage.setItem("mostrarProductos",true)
-    
-}
+
 
 function mostrarProductos (array){
     contenedorProductos.innerHTML = ` `
@@ -202,11 +194,14 @@ function mostrarProductos (array){
     }
 }
 
+setTimeout(()=>{
+    loaderCargaProductos.remove()
+     mostrarProductos(listaProductos)
+},2500)
 
-//OCULTAR PRODUCTOS
 
-btnOcultarProductos.addEventListener("click" , () =>{contenedorProductos.innerHTML = ` `})
-btnOcultarProductos.addEventListener("click" , () =>{localStorage.setItem("mostrarProductos",false)})
+
+
 
 //CARRITO
 
@@ -344,14 +339,14 @@ btnSinEnvio.addEventListener("click" , ()=>{
 
 function agregarACarrito(producto){
     let busquedaProducto = carrito.find((elemento) =>elemento.id == producto.id )
-   
+
     if(busquedaProducto == undefined){
         
         producto.cantidad++
         
         carrito.push(producto) 
     }else{
-        producto.cantidad++
+        busquedaProducto.cantidad++
     }
     localStorage.setItem("carrito" , JSON.stringify(carrito))
     
@@ -361,7 +356,9 @@ function agregarACarrito(producto){
 
 
 
+/*LIBRERIAS*/
 
+//Poner un alert para cuando se agrego un producto al carrito con temporizador 
 
 
 
