@@ -3,14 +3,10 @@
         -Agregar Productos.
         -Ordenarlos alfabeticamente y por precio 
         -Agregarlos a un carrito la cantidad que sean necesarios 
+        -Texto de ultima actualizacion utilizando la hora.
 Para la interaccion con el usuario use sweet alert , Toastify y boostrap 
-Use un .json propio con productos predeterminados que agregue 
+Use un .json propio con productos predeterminados que agregue.*/
 
-FALTA: 
-      Agregar un texto de ultima actualizacion utilizando la hora.
-
-
-*/
 let nombreProducto = document.getElementsByClassName("nombreProducto");
 
 let precioProducto =document.getElementsByClassName("precioProducto");
@@ -72,11 +68,6 @@ if(localStorage.getItem("fechaActualizacion")){
 }
     
     
-    
-
-
-
-
 
 //CONTADOR DE CARACTERES
 function contadorDeCaracteres() {
@@ -317,7 +308,7 @@ function calcularTotal(array , costoDelEnvio){
         precioTotal.innerHTML = ` <p>TOTAL : <strong>$${total + costoDelEnvio} </strong></p>`
     }
     
-    
+    localStorage.setItem("ConsultaEnvio" , true)
     
 
 }
@@ -358,6 +349,7 @@ function ocultBotonFinalizarCompra(){
     btnFinalizarCompra.style.display = "none"
 }
 /****************************************************************************************************************** */
+
 function cargarProductosCarrito(array){
     modalBodyCarrito.innerHTML = ``
     precioTotal.innerHTML = ``
@@ -401,19 +393,14 @@ botonCarrito.addEventListener("click", () => {
 })
 
 
-
-
-
-
-
 btnConEnvio.addEventListener("click" , ()=> {
       
-    localStorage.setItem("ConsultaEnvio" , true)
+
     carrito != 0 && (localStorage.setItem("BotonEnvio" , true) , costoEnvio(carrito))
     })
 
 btnSinEnvio.addEventListener("click" , ()=>{
-    localStorage.setItem("ConsultaEnvio" , true)
+   
     carrito != 0 && (localStorage.setItem("BotonEnvio" , false),calcularTotal(carrito , 0)) 
 })
 
@@ -432,17 +419,6 @@ function agregarACarrito(producto){
     localStorage.setItem("carrito" , JSON.stringify(carrito))
     
 }
-
-
-
-
-
-/*LIBRERIAS*/
-
-//Poner un alert para cuando se agrego un producto al carrito con temporizador 
-
-
-
 
 
 btnFinalizarCompra.addEventListener("click" , ()=>{
