@@ -1,9 +1,16 @@
+/*Este proyecto tiene el objetivo de ser una pagina web donde se vendan productos.
+    FUNCIONALIDADES:
+        -Agregar Productos.
+        -Ordenarlos alfabeticamente y por precio 
+        -Agregarlos a un carrito la cantidad que sean necesarios 
+Para la interaccion con el usuario use sweet alert , Toastify y boostrap 
+Use un .json propio con productos predeterminados que agregue 
 
-//PODRIA HACER UN "TIPO DE PRODUCTO"
-//Buscador (Clase 12)
+FALTA: 
+      Agregar un texto de ultima actualizacion utilizando la hora.
 
-//DOM
 
+*/
 let nombreProducto = document.getElementsByClassName("nombreProducto");
 
 let precioProducto =document.getElementsByClassName("precioProducto");
@@ -21,11 +28,7 @@ let btnAgregarProducto = document.getElementById("btnAgregarProducto")
 
 let loaderCargaProductos = document.getElementById("contenedorLoaderProductos")
 
-// let btnMostrarProductos = document.getElementById("btnMostrarProductos")
-
-// let btnOcultarProductos = document.getElementById("btnOcultarProductos")
-
-
+let btnFinalizarCompra = document.getElementById("botonFinalizarCompra")
 
 let selecFiltrado = document.getElementById("selecFiltrado")
 
@@ -56,6 +59,22 @@ if(localStorage.getItem("carrito")){
     localStorage.setItem("carrito" , carrito)
 }
 
+//POR DEFECTO FECHA 
+
+
+if(localStorage.getItem("fechaActualizacion")){
+    let fechaActualizada = localStorage.getItem("fechaActualizacion")
+    let fechaString = JSON.stringify(fechaActualizada)
+    
+    document.getElementById("containerFecha").textContent = `Fecha de última actualización:  ${fechaString}`
+}else{
+    document.getElementById("containerFecha").textContent = "No se han realizado actualizaciones "
+}
+    
+    
+    
+
+
 
 
 
@@ -70,12 +89,31 @@ function contadorDeCaracteres() {
     countSpan.textContent = remaining;
 }
 
+//FUNCION DE ULTIMA ACTUALIZACION 
+function actualizarFecha() {
+    let fecha = new Date();
+    let dia = fecha.getDate();
+    let mes = fecha.getMonth() + 1; 
+    let anio = fecha.getFullYear();
+  
+    let hora = fecha.getHours();
+    let minutos = fecha.getMinutes();
+    let segundos = fecha.getSeconds();
+  
+    let fechaActualizada = `${dia}/${mes}/${anio} ${hora}:${minutos}:${segundos}`;
+    
+    localStorage.setItem("fechaActualizacion" , fechaActualizada)
+   document.getElementById("containerFecha").textContent = "Fecha de última actualización: " + fechaActualizada;
+  }
+
+
+
 //FUNCIONES PARA AGREGAR PRODUCTO
 let aviso
 let avisoPrecio
 btnAgregarProducto.onclick= () => {
     agregarProducto(textAreaNombreProducto.value , textAreaPrecioProducto.value ) 
-
+    
 }
 
 
@@ -84,17 +122,20 @@ function agregarProducto(nombre , precio ){
     
     
     let nombreProd = nombre
-    if(evaluarNombreProducto(nombreProd)== true || nombreProd =="" || precio == ""){
-        if(aviso == undefined){
-            aviso = document.createElement("div")
-    
-            aviso.className = "claseAviso"
-                aviso.innerHTML=`<div >
-                ERROR:Faltan datos por completar o Dato ya ingresado
-                </div>`
-                contenedorPrecioProducto.appendChild(aviso)
-                
-        }        
+    if(evaluarNombreProducto(nombreProd)== true ){
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Producto Ya ingresadi',
+            
+          })
+    }else if(nombreProd =="" || precio == ""){
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Campos sin completar',
+           
+          })
     }else{
         let precioProd = precio
         let productoNuevo=new Producto(listaProductos.length + 1 , nombreProd , precioProd , 0);
@@ -102,10 +143,19 @@ function agregarProducto(nombre , precio ){
         listaProductos.push(productoNuevo)
 
         localStorage.setItem("listaProductos" , JSON.stringify( listaProductos))
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Producto agregado correctamente'
+            
+           
+          })
  
         mostrarProductos(listaProductos)
+
        
     }
+    actualizarFecha()
 
 }
     
@@ -190,6 +240,15 @@ function mostrarProductos (array){
        
         btnAgregarAlCarrito.addEventListener("click" , () =>{
             agregarACarrito(producto)
+            //Notificacion de que se agrego al carrito 
+            Toastify({
+
+                text: "Producto agregado al carrito",
+                gravity: 'bottom',
+                position: 'right',
+                duration: 3000
+                
+                }).showToast();
         })
     }
 }
@@ -241,11 +300,13 @@ function costoEnvio(array){
             }
             
             calcularTotal(array , costoDelEnvio)
+
         })   
     }
 }
 
 function calcularTotal(array , costoDelEnvio){
+    
     let total = array.reduce((acumulador , producto) => acumulador + (producto.precio*producto.cantidad) , 0)
     
     if (localStorage.getItem("BotonEnvio") == "true"){
@@ -256,7 +317,8 @@ function calcularTotal(array , costoDelEnvio){
         precioTotal.innerHTML = ` <p>TOTAL : <strong>$${total + costoDelEnvio} </strong></p>`
     }
     
-
+    
+    
 
 }
 
@@ -277,13 +339,25 @@ function borrarProducto(array,idABorrar){
     cargarProductosCarrito(array)
 }
 
+//FUNCIONES PARA MOSTRAR U OCULTAR BOTONES 
+/***************************************************************************************************************** */
 function mostrarcontenidoBotonCarrito(){
     contenidoBotonCarrito.style.display="block"
+    
 }
 
 function ocultarcontenidoBotonCarrito(){
     contenidoBotonCarrito.style.display="none"
+    
 }
+
+function mostrBotonFinalizarCompra(){
+    btnFinalizarCompra.style.display = "block"
+}
+function ocultBotonFinalizarCompra(){
+    btnFinalizarCompra.style.display = "none"
+}
+/****************************************************************************************************************** */
 function cargarProductosCarrito(array){
     modalBodyCarrito.innerHTML = ``
     precioTotal.innerHTML = ``
@@ -317,22 +391,29 @@ function cargarProductosCarrito(array){
 
 
 botonCarrito.addEventListener("click", () => {
-    
+    localStorage.setItem("ConsultaEnvio" , false)
     cargarProductosCarrito(carrito)
 
-//    }
-   
     precioTotal.innerHTML = ``
     contenidoBtnEnvio.innerHTML=``
+
+    
 })
+
+
+
+
+
+
 
 btnConEnvio.addEventListener("click" , ()=> {
       
-
+    localStorage.setItem("ConsultaEnvio" , true)
     carrito != 0 && (localStorage.setItem("BotonEnvio" , true) , costoEnvio(carrito))
     })
 
 btnSinEnvio.addEventListener("click" , ()=>{
+    localStorage.setItem("ConsultaEnvio" , true)
     carrito != 0 && (localStorage.setItem("BotonEnvio" , false),calcularTotal(carrito , 0)) 
 })
 
@@ -364,10 +445,49 @@ function agregarACarrito(producto){
 
 
 
+btnFinalizarCompra.addEventListener("click" , ()=>{
+    
+    
+    if(localStorage.getItem("ConsultaEnvio") == "true"){
+        
+        Swal.fire({
+            title: 'Confirmacion de compra',
+            text: "Esta seguro de confirmar la compra?",
+            icon: 'question',
+            showDenyButton:true,
+            confirmButtonColor: '#3085d6',
+            denyButtonText: `No,quiero seguir comprando`,
+            confirmButtonText: 'Confirmo!'
+          
+          }).then((result) => {
+            if (result.isConfirmed) {
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Compra realizada',
+                    text: `Usted ha realizado la compra correctamente`
+                    
+                  })
+                  carrito=[]
+                  localStorage.setItem("carrito" , carrito)
+            }else{
+                Swal.fire({
+                    icon: 'info',
+                    title:'Compra cancelada',
+                    text:`Recuerde que los productos siguen en el carrito`
+                })
+            }
+          })
 
-
-
-
-
-
+    }else{
+      
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Falta seleccionar opcion de retiro',
+            
+          })
+    }
+    
+})
 

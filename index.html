@@ -6,7 +6,9 @@
     <title>Document</title>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
-     <!--Bootstrap-->
+    <!-- Toastify -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <!--Bootstrap-->
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
      
 </head>
@@ -79,7 +81,7 @@
             
             
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            <!-- <button type="button" data-bs-dismiss="modal" class="btn btn-success" id="botonFinalizarCompra">Finalizar Compra</button> -->
+            <button type="button" data-bs-dismiss="modal" class="btn btn-success" id="botonFinalizarCompra">Finalizar Compra</button>
           </div>
         </div>
       </div>
@@ -101,11 +103,14 @@
         </div>
         <div class="contenedorBotones">
             <button type="button" id="btnAgregarProducto" class="btn btn-sm btn-primary btn-success fs-7" on>Agregar Producto</button>
-            <!-- <button type="button" id="btnMostrarProductos" class="btn btn-sm btn-primary" onclick=mostrarProductos()>Mostrar Productos</button>
-            <button type="button" id="btnOcultarProductos" class="btn btn-sm btn-primary">Ocultar Productos</button> -->
+            
         </div>
        
     </form>
+
+    <div id="containerFecha">
+      
+    </div>
 
     <div class="container">
         <div id="Productos" class="row">
@@ -125,12 +130,19 @@
       </div>
     </div>
     
+     <!-- Script de Toastify -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
      <!--Script de Bootstrap-->
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
      </script>
+    <!-- Script de sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    
+
+    <!-- Scrips a archivos js  -->
     <script src="js/class.js"></script>
     <script src="js/index.js"></script>
 </body>
